@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Miembros de la Familia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="topbar">
+        <div class="topbar-left">
+          <h1 class="app-title">👪 Family Chat</h1>
+        </div>
+        <div class="topbar-center">
+          <div class="panel-title">Miembros</div>
+        </div>
+        <div class="topbar-right">
+          <button id="modeToggle" class="btn ghost">🌓 Modo oscuro</button>
+          <button id="addBtn" class="btn icon">➕ Añadir Miembro</button>
+          <button id="goChatBtn" class="btn secondary">💬 Chat general</button>
+          <button id="settingsBtn" class="btn ghost">⚙️ Configuración</button>
+          <button id="logoutBtn" class="btn ghost">Cerrar sesión</button>
+        </div>
+      </div>
+
+      <div class="members-layout">
+        <div class="card members-card">
+          <h2>Miembros de la Familia</h2>
+          <p class="lead">Añade, edita o elimina miembros de tu grupo familiar.</p>
+          <div class="panel-scroll" id="membersTableWrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Perfil</th>
+                  <th>Nombre</th>
+                  <th>Apodo</th>
+                  <th>Rol</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="membersTbody"></tbody>
+            </table>
+          </div>
+          <div id="listError" class="error"></div>
+        </div>
+
+        <div class="card members-card">
+          <h2>Información</h2>
+          <p class="lead">Aquí podrás agregar información general o notas sobre tu familia.</p>
+          <div id="infoPanel" class="panel-scroll">
+            <div class="messages">
+              <p class="small">Próximamente: recordatorios, eventos y más.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal crear/editar miembro (restaurado) -->
+    <div id="modal" class="modal" aria-hidden="true">
+      <div class="content">
+        <h3 id="modalTitle">Añadir Nuevo Miembro</h3>
+        <div class="grid grid-cols-2" style="margin-top:8px">
+          <div><label>Nombre</label><input id="firstName" type="text" /></div>
+          <div><label>Apellido</label><input id="lastName" type="text" /></div>
+          <div><label>Apodo (debe ser único)</label><input id="nickname" type="text" placeholder="ej: yareimita" /></div>
+          <div><label>Usuario (para iniciar sesión)</label><input id="username" type="text" placeholder="ej: juanperez123" /></div>
+          <div><label>Contraseña</label><input id="password" type="password" /></div>
+          <div><label>Confirmar Contraseña</label><input id="password2" type="password" /></div>
+          <div><label>Fecha de Nacimiento</label><input id="birthDate" type="text" placeholder="DD-MM-YYYY" /></div>
+          <div>
+            <label>Rol Familiar</label>
+            <select id="relation">
+              <option>Papá</option><option>Mamá</option><option>Hijo</option><option>Hija</option>
+              <option>Abuela</option><option>Abuelo</option><option>Tío</option><option>Tía</option>
+              <option>Hermano</option><option>Hermana</option><option>Primo</option><option>Prima</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div style="grid-column:1/-1; display:none" id="relationOtherWrap">
+            <label>Especifica el rol</label><input id="relationOther" type="text" placeholder="Ej. Padrastro, Madrina…" />
+          </div>
+          <div style="grid-column:1/-1"><label>Ubicación</label><input id="location" type="text" placeholder="Ciudad, País" /></div>
+        </div>
+        <div class="modal-actions">
+          <button id="cancelBtn" class="btn secondary">Cancelar</button>
+          <button id="saveBtn" class="btn">Guardar Cambios</button>
+        </div>
+        <div id="modalError" class="error"></div>
+      </div>
+    </div>
+
+    <!-- Configuración de temas (siempre visible y angosta a la derecha) -->
+    <div id="settingsModal" class="modal" aria-hidden="true">
+      <div class="content">
+        <h3>Configuración de Tema</h3>
+        <div class="grid grid-cols-2" style="margin:8px 0">
+          <div>
+            <label>Tema predefinido</label>
+            <select id="themePreset">
+              <option value="default">Predeterminado</option>
+              <option value="midnight">Medianoche</option>
+              <option value="forest">Bosque</option>
+              <option value="sunset">Atardecer</option>
+              <option value="ocean">Océano</option>
+              <option value="matrix">Matrix</option>
+              <option value="whatsapp">WhatsApp</option>
+              <option value="telegram">Telegram</option>
+              <option value="msn">MSN Messenger</option>
+              <option value="feminine">Femenino</option>
+              <option value="starwars">Star Wars</option>
+              <option value="spiderman">Spider‑Man</option>
+              <option value="ironman">Iron Man</option>
+              <option value="custom">Personalizado</option>
+            </select>
+          </div>
+          <div>
+            <label>Modo</label>
+            <select id="themeMode">
+              <option value="dark">Oscuro</option>
+              <option value="light">Claro</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Personalizado SIEMPRE visible (sin dropdown) -->
+        <div id="customSection" style="margin-top:8px">
+          <div class="small" style="margin-bottom:6px">Personalizado</div>
+          <div class="grid grid-cols-2" style="margin-top:8px">
+            <div class="color-row"><label>Fondo</label><input type="color" id="c_bg" /></div>
+            <div class="color-row"><label>Tarjetas</label><input type="color" id="c_surface" /></div>
+            <div class="color-row"><label>Borde</label><input type="color" id="c_border" /></div>
+            <div class="color-row"><label>Texto</label><input type="color" id="c_text" /></div>
+            <div class="color-row"><label>Primario</label><input type="color" id="c_primary" /></div>
+            <div class="color-row"><label>Burbuja emisor</label><input type="color" id="c_bubble_me" /></div>
+            <div class="color-row"><label>Burbuja receptor</label><input type="color" id="c_bubble_you" /></div>
+            <div class="color-row"><label>Texto emisor</label><input type="color" id="c_text_me" /></div>
+            <div class="color-row"><label>Texto receptor</label><input type="color" id="c_text_you" /></div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button id="settingsClose" class="btn secondary">Cerrar</button>
+          <button id="settingsSave" class="btn">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./members.js"></script>
+    <script>
+      document.getElementById("settingsBtn").addEventListener("click", ()=>{
+        document.getElementById("settingsModal").style.display = "flex";
+      });
+      document.getElementById("settingsClose").addEventListener("click", ()=>{
+        document.getElementById("settingsModal").style.display = "none";
+      });
+      document.getElementById("goChatBtn").addEventListener("click", ()=> window.location.href = "chat.html");
+    </script>
+  </body>
+</html>

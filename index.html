@@ -1,0 +1,26 @@
+<script type="module">
+  import { firebaseConfig } from "./firebase-config.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+  import { showErrorModal } from "./error-modal.js";
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = "login.html"; return; }
+    try {
+      const uid = user.uid;
+      const famSnap = await getDoc(doc(db, "families", uid));
+      const isAdmin = famSnap.exists() && famSnap.data()?.adminUid === uid;
+
+      // Admin -> members.html | Miembro -> chat.html
+      window.location.href = isAdmin ? "members.html" : "chat.html";
+    } catch (e) {
+      showErrorModal("Error resolviendo rol", e);
+      window.location.href = "chat.html";
+    }
+  });
+</script>

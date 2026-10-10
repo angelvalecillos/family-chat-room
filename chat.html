@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Family Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="topbar">
+        <div class="topbar-left">
+          <!-- Botón móvil para abrir/cerrar la lista de chats -->
+          <button id="openChats" class="btn secondary">☰ Chats</button>
+        </div>
+        <div class="topbar-center">
+          <span id="userInfo" class="user-name"></span>
+        </div>
+        <div class="topbar-right">
+          <button id="modeToggle" class="btn ghost">🌓 Modo oscuro</button>
+          <button id="editSelfBtn" class="btn secondary">✏️ Editar</button>
+          <button id="settingsBtn" class="btn ghost">⚙️ Configuración</button>
+          <button id="logoutBtn" class="btn ghost">Cerrar sesión</button>
+          <button id="backBtn" class="btn secondary">← Miembros</button>
+        </div>
+      </div>
+
+      <!-- Layout principal del chat -->
+      <div class="card chat-layout">
+        <aside class="chat-list" id="chatList">
+          <div class="chat-list-header">
+            <h3 style="margin:0">Chats</h3>
+            <input id="searchInput" type="text" placeholder="Buscar..." />
+          </div>
+          <div id="membersList" class="chat-list-items"></div>
+        </aside>
+
+        <section class="conversation">
+          <div class="conv-header">
+            <div class="conv-title" id="convTitle">Selecciona un contacto</div>
+          </div>
+          <div class="conv-body" id="convBody"></div>
+          <form id="chatForm" class="conv-form" autocomplete="off">
+            <input id="messageInput" type="text" 
+                   placeholder="Escribe un mensaje..."
+                   autocomplete="off"
+                   autocapitalize="none"
+                   spellcheck="true"
+                   aria-autocomplete="none"
+                   inputmode="text"
+                   />
+            <button type="button" id="emojiBtn" class="btn secondary" title="Insertar emoji">😊</button>
+            <button type="submit" class="btn">Enviar</button>
+          </form>
+          <div id="emojiPanel" class="emoji-panel"></div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Backdrop para el panel móvil de chats -->
+    <div id="chatListBackdrop" style="display:none"></div>
+
+    <!-- Editar perfil propio (desde botón Editar del chat) -->
+    <div id="editSelfModal" class="modal" aria-hidden="true">
+      <div class="content">
+        <h3 style="margin-top:0">Editar perfil</h3>
+        <p class="small">Aquí puedes cambiar tu apodo y fecha de nacimiento. Para contraseña usa la sección de abajo.</p>
+
+        <label>Apodo</label>
+        <input id="selfNickname" type="text" placeholder="Tu apodo" />
+
+        <label style="margin-top:8px">Fecha de nacimiento</label>
+        <input id="selfBirthDate" type="text" placeholder="dd-mm-aaaa" />
+
+        <div class="modal-actions" style="margin-top:12px">
+          <button id="editSelfCancel" class="btn secondary">Cancelar</button>
+          <button id="editSelfSave" class="btn">Guardar</button>
+        </div>
+        <div id="editSelfError" class="error"></div>
+
+        <hr class="divider" />
+
+        <h4 style="margin:8px 0 6px">Cambiar contraseña</h4>
+        <div class="grid grid-cols-2" style="margin-top:6px">
+          <div style="grid-column:1/-1">
+            <label>Contraseña actual</label>
+            <input id="currentPassword" type="password" placeholder="••••••••" />
+          </div>
+          <div>
+            <label>Nueva contraseña</label>
+            <input id="newPassword" type="password" placeholder="••••••••" />
+          </div>
+          <div>
+            <label>Confirmar nueva</label>
+            <input id="newPassword2" type="password" placeholder="••••••••" />
+          </div>
+        </div>
+        <div class="modal-actions" style="margin-top:12px">
+          <button id="changePwdBtn" class="btn secondary">Cambiar contraseña</button>
+        </div>
+        <div id="changePwdError" class="error"></div>
+      </div>
+    </div>
+
+    <!-- Configuración de temas y zumbido (siempre visible, angosta y a la derecha) -->
+    <div id="settingsModal" class="modal" aria-hidden="true">
+      <div class="content">
+        <h3 style="margin-top:0">Configuración de Tema</h3>
+
+        <div class="grid grid-cols-2" style="margin:8px 0">
+          <div>
+            <label>Tema predefinido</label>
+            <select id="themePreset">
+              <option value="default">Predeterminado</option>
+              <option value="midnight">Medianoche</option>
+              <option value="forest">Bosque</option>
+              <option value="sunset">Atardecer</option>
+              <option value="ocean">Océano</option>
+              <option value="matrix">Matrix</option>
+              <option value="whatsapp">WhatsApp</option>
+              <option value="telegram">Telegram</option>
+              <option value="msn">MSN Messenger</option>
+              <option value="feminine">Femenino</option>
+              <option value="starwars">Star Wars</option>
+              <option value="spiderman">Spider‑Man</option>
+              <option value="ironman">Iron Man</option>
+              <option value="custom">Personalizado</option>
+            </select>
+          </div>
+          <div>
+            <label>Modo</label>
+            <select id="themeMode">
+              <option value="dark">Oscuro</option>
+              <option value="light">Claro</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Personalizado SIEMPRE visible (sin dropdown) -->
+        <div id="customSection" style="margin-top:8px">
+          <div class="small" style="margin-bottom:6px">Personalizado</div>
+          <div class="grid grid-cols-2" style="margin-top:8px">
+            <div class="color-row"><label>Fondo</label><input type="color" id="c_bg" /></div>
+            <div class="color-row"><label>Tarjetas</label><input type="color" id="c_surface" /></div>
+            <div class="color-row"><label>Borde</label><input type="color" id="c_border" /></div>
+            <div class="color-row"><label>Texto</label><input type="color" id="c_text" /></div>
+            <div class="color-row"><label>Primario</label><input type="color" id="c_primary" /></div>
+            <div class="color-row"><label>Burbuja emisor</label><input type="color" id="c_bubble_me" /></div>
+            <div class="color-row"><label>Burbuja receptor</label><input type="color" id="c_bubble_you" /></div>
+            <div class="color-row"><label>Texto emisor</label><input type="color" id="c_text_me" /></div>
+            <div class="color-row"><label>Texto receptor</label><input type="color" id="c_text_you" /></div>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- Zumbido MSN -->
+        <div class="grid grid-cols-2" style="margin-top:8px">
+          <div class="color-row">
+            <label>Tono</label>
+            <input type="checkbox" id="nudgeEnabled" />
+          </div>
+          <div class="color-row">
+            <label>Volumen</label>
+            <input type="range" id="nudgeVolume" min="0" max="1" step="0.05" />
+          </div>
+          <div style="grid-column:1/-1; display:flex; gap:8px; align-items:center">
+            <button id="nudgeTest" class="btn secondary" type="button">Probar Tono</button>
+            <span class="small">Puede requerir un clic previo para habilitar audio.</span>
+          </div>
+        </div>
+
+        <audio id="nudgeAudio" preload="auto" src="./zumbido.mp3" style="display:none"></audio>
+
+        <div class="modal-actions" style="margin-top:12px">
+          <button id="settingsClose" class="btn secondary">Cerrar</button>
+          <button id="settingsSave" class="btn">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./chat.js"></script>
+    <script>
+      document.getElementById("settingsBtn")?.addEventListener("click", ()=>{
+        const m = document.getElementById("settingsModal"); if (m) m.style.display = "flex";
+      });
+      document.getElementById("settingsClose")?.addEventListener("click", ()=>{
+        const m = document.getElementById("settingsModal"); if (m) m.style.display = "none";
+      });
+      document.getElementById("editSelfBtn")?.addEventListener("click", ()=>{
+        const m = document.getElementById("editSelfModal"); if (m) m.style.display = "flex";
+      });
+      document.getElementById("editSelfCancel")?.addEventListener("click", ()=>{
+        const m = document.getElementById("editSelfModal"); if (m) m.style.display = "none";
+      });
+    </script>
+  </body>
+</html>

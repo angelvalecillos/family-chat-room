@@ -1,0 +1,294 @@
+:root {
+  color-scheme: dark;
+  --bg: #0f1220;
+  --surface: #1a1f35;
+  --muted: #2b2f4a;
+  --border: #2a2e46;
+  --text: #e7e7ea;
+  --text-muted: #a7aacc;
+  --primary: #6c5ce7;
+  --primary-700: #5a49d5;
+  --danger: #bb2d3b;
+
+  --bubble-me-bg: #25306b;
+  --bubble-you-bg: #161a30;
+  --bubble-me-border: #3a48a5;
+  --bubble-you-border: #2a2e46;
+  --text-me: #e7e7ea;
+  --text-you: #e7e7ea;
+
+  --input-bg: #0f1328;
+  --input-border: #2a2e46;
+  --item-bg: #171b2e;
+  --item-active-bg: #1d2240;
+}
+
+/* Base & container */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif; background: var(--bg); color: var(--text); }
+.container { max-width: 1200px; margin: 0 auto; padding: 16px; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+/* Topbar */
+.topbar { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; gap: 8px; margin-bottom: 12px; min-height: 64px; flex: 0 0 auto; }
+.topbar-left { display:flex; align-items:center; gap:8px; }
+.topbar-center { display:flex; justify-content:center; align-items:center; }
+.topbar-right { display:flex; justify-content:flex-end; align-items:center; gap:8px; }
+.user-name { font-size: 1.5em; font-weight: 700; }
+
+/* Botones y tarjetas */
+.btn { padding: 10px 14px; border: none; border-radius: 8px; background: var(--primary); color: #fff; font-weight: 600; cursor: pointer; }
+.btn:hover { background: var(--primary-700); }
+.btn.secondary { background: var(--muted); color: var(--text); }
+.btn.ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn.icon { display: inline-flex; align-items: center; gap: 8px; }
+.btn.danger { background: var(--danger); color: #fff; }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+.card h2 { margin: 0 0 6px; }
+.card p.lead { color: var(--text-muted); margin: 0 0 12px; }
+
+/* Inputs y selects */
+label { display: block; margin: 8px 0 6px; }
+input:not([type="color"]), select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text);
+}
+.small { font-size: 12px; color: var(--text-muted); }
+
+/* Cuadros de color compactos */
+.color-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.color-row label { margin: 0; }
+input[type="color"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  cursor: pointer;
+}
+input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+input[type="color"]::-webkit-color-swatch { border: none; border-radius: 6px; }
+
+/* Divisor */
+.divider { border: 0; border-top: 1px solid var(--border); margin: 12px 0; }
+
+/* CHAT layout */
+.card.chat-layout { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: 320px 1fr; gap: 16px; }
+.chat-list { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; min-height: 0; }
+.chat-list-header { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 8px; }
+.chat-list-items { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; }
+
+.chat-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px; border-radius: 10px; cursor: pointer;
+  background: var(--item-bg); border: 1px solid transparent;
+}
+.chat-item:hover { border-color: var(--border); }
+.chat-item.active { border-color: var(--primary); background: var(--item-active-bg); }
+.chat-item .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--muted); display:flex; justify-content:center; align-items:center; font-weight:700; color: var(--text); }
+.chat-item .meta { display: grid; gap: 2px; }
+.chat-item .meta .name { font-weight: 600; }
+.chat-item .meta .sub { font-size: 12px; color: var(--text-muted); }
+.chat-item .dot { margin-left: auto; width: 10px; height: 10px; background: #ff5a5a; border-radius: 50%; box-shadow: 0 0 6px rgba(255,90,90,.7); }
+
+.conversation { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; display: grid; grid-template-rows: auto 1fr auto; min-height: 0; }
+.conv-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.conv-title { font-weight: 700; }
+.conv-body { padding: 12px; overflow-y: auto; overflow-x: hidden; background: var(--bg); min-height: 0; }
+
+.load-more-bar { position: sticky; top: 0; z-index: 1; margin: -12px -12px 8px -12px; padding: 8px; background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--border); width: calc(100% + 24px); color: var(--text); cursor: pointer; text-align: center; border-radius: 12px 12px 0 0; }
+
+.bubble { max-width: 70%; margin: 6px 0; padding: 10px 12px; border-radius: 12px; background: var(--bubble-you-bg); border: 1px solid var(--bubble-you-border); color: var(--text-you); }
+.bubble.me { margin-left: auto; background: var(--bubble-me-bg); border-color: var(--bubble-me-border); color: var(--text-me); }
+.bubble .who { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.bubble .stamp { margin-top: 6px; font-size: 11px; color: var(--text-muted); opacity: 0.9; }
+.bubble.me .stamp { text-align: right; }
+
+.conv-form { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 12px; border-top: 1px solid var(--border); }
+
+/* Shake para zumbido */
+.shake { animation: shake 0.4s ease; }
+@keyframes shake {
+  0%{ transform: translate(0) }
+  20%{ transform: translate(-4px) }
+  40%{ transform: translate(4px) }
+  60%{ transform: translate(-4px) }
+  80%{ transform: translate(4px) }
+  100%{ transform: translate(0) }
+}
+
+/* Members layout con sidebars */
+.members-layout { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.members-card { display: flex; flex-direction: column; min-height: 0; }
+.panel-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; }
+
+/* MODALES: anclar a la derecha, tamaño angosto y alto fijo */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: flex-end;   /* Empuja el contenido hacia la derecha */
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+.modal .content {
+  width: 300px;                /* Más angosta */
+  max-width: 300px;
+  height: calc(100vh - 32px);  /* Alto casi completo */
+  max-height: calc(100vh - 32px);
+  margin-right: 16px;          /* Separación del borde derecho */
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+}
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+
+/* Scrollbars visibles */
+.chat-list-items, .conv-body, .panel-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted) transparent;
+}
+.chat-list-items::-webkit-scrollbar, .conv-body::-webkit-scrollbar, .panel-scroll::-webkit-scrollbar { width: 10px; }
+.chat-list-items::-webkit-scrollbar-thumb, .conv-body::-webkit-scrollbar-thumb, .panel-scroll::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 8px; }
+.chat-list-items::-webkit-scrollbar-track, .conv-body::-webkit-scrollbar-track, .panel-scroll::-webkit-scrollbar-track { background: transparent; }
+
+/* Conv-form ahora tiene 3 columnas: input + emoji + enviar */
+.conv-form { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; padding: 12px; border-top: 1px solid var(--border); }
+
+/* Panel de emojis */
+.emoji-panel {
+  position: absolute;
+  bottom: 64px;
+  right: 24px;
+  width: 280px;
+  max-height: 260px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.35);
+  padding: 8px;
+  z-index: 900;
+
+  /* Cerrado por defecto: sin grid y sin scrollbars visibles */
+  display: none;
+  overflow: hidden;
+}
+
+.emoji-panel button {
+  font-size: 22px;
+  line-height: 1;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+/* Abierto: se muestra como grid y permite scroll */
+.emoji-panel.open {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  overflow: auto;
+}
+
+/* Garantiza ocultar si alguna lógica usa [hidden] */
+.emoji-panel[hidden] {
+  display: none !important;
+}
+
+/* Botones de cada emoji */
+.emoji-panel button {
+  font-size: 22px;
+  line-height: 1;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.emoji-panel button:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+/* Responsive: ancho mayor en móviles */
+@media (max-width: 768px) {
+  .emoji-panel {
+    right: 12px;
+    bottom: 72px;
+    width: 90vw;
+    max-width: 320px;
+  }
+}
+/* ... tus estilos existentes ... */
+
+/* Panel deslizante para la lista de chats en móviles */
+@media (max-width: 768px) {
+  .card.chat-layout {
+    grid-template-columns: 1fr;      /* Una sola columna: conversación ocupa toda la pantalla */
+    position: relative;
+  }
+  .chat-list {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 86vw;                      /* ancho del panel */
+    max-width: 360px;
+    height: 100vh;
+    z-index: 1100;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    box-shadow: 8px 0 24px rgba(0,0,0,.45);
+    transform: translateX(-100%);     /* oculto por defecto */
+    transition: transform .25s ease;
+  }
+  .chat-list.open {
+    transform: translateX(0);         /* visible cuando se añade la clase .open */
+  }
+  .chat-list-header {
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+    z-index: 1;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .emoji-panel {
+    right: 12px;
+    bottom: 72px;                     /* un poco más arriba del formulario */
+    width: 90vw;
+    max-width: 320px;
+  }
+  /* El modal sigue angosto, pero permite respirar en móviles */
+  .modal .content {
+    width: 300px;
+    max-width: 94vw;
+    height: calc(100vh - 32px);
+    max-height: calc(100vh - 32px);
+  }
+}
+
+/* Backdrop para el panel de chats (se añade dinámicamente) */
+#chatListBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.4);
+  z-index: 1000;
+  display: none;                      /* se muestra al abrir el panel */
+}

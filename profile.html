@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Actualiza tu Perfil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body{font-family:system-ui,sans-serif;background:#0f1220;color:#e7e7ea;display:flex;justify-content:center;align-items:flex-start;min-height:100vh}
+      .card{background:#1a1f35;padding:24px;border-radius:12px;width:560px;box-shadow:0 6px 24px rgba(0,0,0,.4);margin-top:24px}
+      h1{margin-top:0}label{display:block;margin:12px 0 6px}
+      input{width:100%;padding:10px;border-radius:8px;border:1px solid #333a5a;background:#0f1328;color:#e7e7ea}
+      .actions{display:flex;gap:8px;margin-top:16px}
+      .error{color:#ff7675;margin-top:8px;min-height:20px}
+      img{max-width:120px;border-radius:8px;margin-top:8px}
+      .section{margin-top:18px;padding-top:12px;border-top:1px solid #333a5a}
+      .row{display:flex;gap:8px;flex-wrap:wrap}
+      .row > *{flex:1}
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Actualiza tu Perfil</h1>
+      <p>Edita tu información personal.</p>
+
+      <label>Nombre</label>
+      <input id="firstName" type="text" placeholder="Nombre" />
+
+      <label>Apellido</label>
+      <input id="lastName" type="text" placeholder="Apellido" />
+
+      <label>Apodo</label>
+      <input id="nickname" type="text" placeholder="Apodo para el chat" />
+
+      <label>Fecha de Nacimiento</label>
+      <input id="birthDate" type="text" placeholder="dd-mm-aaaa" />
+
+      <label>Ubicación</label>
+      <input id="location" type="text" placeholder="Ciudad, país" />
+
+      <label>Foto de Perfil (URL opcional)</label>
+      <input id="photoUrl" type="url" placeholder="https://..." />
+      <img id="preview" alt="Vista previa" />
+
+      <div class="actions">
+        <button id="saveBtn">Guardar Perfil</button>
+        <button id="backBtn" type="button">Volver</button>
+      </div>
+      <div class="error" id="error"></div>
+
+      <div class="section">
+        <h2 style="margin:0 0 8px">Cambiar contraseña</h2>
+        <div class="row">
+          <div>
+            <label>Contraseña actual</label>
+            <input id="currentPassword" type="password" placeholder="••••••••" />
+          </div>
+          <div>
+            <label>Nueva contraseña</label>
+            <input id="newPassword" type="password" placeholder="••••••••" />
+          </div>
+          <div>
+            <label>Confirmar nueva contraseña</label>
+            <input id="newPassword2" type="password" placeholder="••••••••" />
+          </div>
+        </div>
+        <div class="actions">
+          <button id="savePasswordBtn">Cambiar contraseña</button>
+        </div>
+        <div class="error" id="pwdError"></div>
+      </div>
+    </div>
+
+    <script type="module" src="./profile.js"></script>
+  </body>
+</html>

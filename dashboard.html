@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Family Chat - Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="header-title">
+          <span>👪</span>
+          <span>Family Chat</span>
+        </div>
+        <div class="header-actions">
+          <button id="goMembers" class="btn secondary">Miembros</button>
+          <button id="goChat" class="btn">Chat general</button>
+          <button id="logoutBtn" class="btn ghost">Cerrar sesión</button>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h2>Miembros</h2>
+          <p class="lead">Gestiona los miembros de tu familia.</p>
+          <div id="members"></div>
+          <div class="grid grid-cols-2" style="margin-top:12px">
+            <div>
+              <label for="memberNickname">Apodo</label>
+              <input id="memberNickname" type="text" placeholder="Apodo" />
+            </div>
+            <div>
+              <label for="memberRelation">Relación (ej. Papá, Hijo)</label>
+              <input id="memberRelation" type="text" placeholder="Relación" />
+            </div>
+          </div>
+          <div style="margin-top:12px; display:flex; gap:8px">
+            <button id="addMember" class="btn">Agregar</button>
+            <div id="mErr" class="error"></div>
+          </div>
+          <p class="small" style="margin-top:8px">Para administración avanzada, usa el botón “Miembros” arriba.</p>
+        </div>
+
+        <div class="card">
+          <h2>Información</h2>
+          <p class="lead">Este panel lista los miembros de tu familia. Solo ellos podrán chatear en el chat general.</p>
+          <p>El administrador puede agregar miembros sin correo. Usa “Miembros” para ver la tabla y el formulario completos.</p>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./dashboard.js"></script>
+    <script>
+      document.getElementById("goMembers").addEventListener("click", ()=> window.location.href = "members.html");
+      document.getElementById("goChat").addEventListener("click", ()=> window.location.href = "chat.html");
+    </script>
+  </body>
+</html>
